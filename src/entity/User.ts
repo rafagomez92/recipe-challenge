@@ -1,4 +1,4 @@
-import { Entity, Unique, Generated, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, Unique, Generated, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
 // import { Entity, 
 // Column, 
 // PrimaryGeneratedColumn, 
@@ -8,11 +8,11 @@ import { Entity, Unique, Generated, PrimaryGeneratedColumn, Column } from 'typeo
 // } from 'typeorm'
 
 
-import { Recipe } from './Recipe'
+// import { Recipe } from './Recipe'
 
 @Entity()
 @Unique(['email'])
-export class User {
+export class User extends BaseEntity {
 
     @PrimaryGeneratedColumn()
     @Generated('uuid')

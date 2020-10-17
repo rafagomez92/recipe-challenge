@@ -1,14 +1,20 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql'
-
+import { User } from '../entity/User';
 @Resolver()
 export class UserResolver {
-    @Mutation()
-    createUser(
+
+    @Query(() =>  String)
+    ping() {
+        return "Pong!"
+    }
+
+    @Mutation(() => Boolean)
+    async createUser(
         @Arg("name") name: string,
         @Arg("email") email: string,
         @Arg("password") password: string,
     ) {
-        console.log(name, email, password)
+        await User.insert({ name, email, password })
         return true
     }
 }

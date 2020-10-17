@@ -2,10 +2,10 @@ import { Entity,
     Column, 
     PrimaryGeneratedColumn, 
     Generated,            
-    ManyToOne
+    // ManyToOne
 } from 'typeorm'
-import { Category } from './Category'
-import { User } from './User'
+// import { Category } from './Category'
+// import { User } from './User'
 
 @Entity()
 export class Recipe {
@@ -24,10 +24,10 @@ export class Recipe {
     ingredients!: string[]
 
     // A Recipe can have only one user and category
-    @ManyToOne(type => Category, category => category.recipes)    
-    category!: Category
+    // @ManyToOne(type => Category, category => category.recipes)    
+    // category!: Category
     
     
-    @ManyToOne(type => User, user => user.recipes)
-    user!: User
+    // @ManyToOne(type => User, user => user.recipes)
+    // user!: User
 }
