@@ -1,15 +1,8 @@
-import { MinLength, IsNotEmpty, IsEmail} from 'class-validator';
+// bcryptjs is for encrypt the password
 // import * as bcrypt from 'bcryptjs';
-import { Entity, Unique, Generated, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
-import { ObjectType, Field, ID } from "type-graphql";
+import { Entity, Unique, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { ObjectType, Field, ID, Int } from "type-graphql";
 
-// import { Entity, 
-// Column, 
-// PrimaryGeneratedColumn, 
-// Generated,
-// OneToMany,
-// Unique
-// } from 'typeorm'
 
 
 // import { Recipe } from './Recipe'
@@ -21,23 +14,19 @@ export class User extends BaseEntity {
 
     @Field(() => ID)
     @PrimaryGeneratedColumn()    
-    id!: string
+    id!: number
     
     @Field(() => String)
     @Column()
-    @IsNotEmpty()
     name!: string
     
     @Field(() => String)
-    @Column()
-    @IsEmail()
+    @Column()    
     email!: string
     
     
     @Field(() => String)
-    @Column()
-    @MinLength(6)
-    @IsNotEmpty()
+    @Column()        
     password!: string
     
     
@@ -49,4 +38,10 @@ export class User extends BaseEntity {
     //     const salt = bcrypt.genSaltSync(10);        
     //     this.password = bcrypt.hashSync(this.password, salt);
     // }
+
+    // For authentication 
+    // checkPassword(password: string ): boolean {
+    //     return bcrypt.compareSync(password, this.password);
+    // }
+
 }

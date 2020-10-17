@@ -1,5 +1,6 @@
-import { Query, Resolver, Mutation, Arg } from 'type-graphql';
+import { Query, Resolver, Mutation, Arg, Int } from 'type-graphql';
 import { Recipe } from '../entity/Recipe';
+import { RecipeInput } from './inputs/RecipeInput';
 
 
 @Resolver()
@@ -9,15 +10,25 @@ export class RecipeResolver {
     getRecipes() {
         return Recipe.find();
     }
-
-    @Mutation(() => Boolean)
-    async createRecipe(
-        @Arg('name') name: string,
-        @Arg('description') description: string,
-        @Arg('ingredients') ingredients: string
-    ) {
-        await Recipe.insert({ name, description, ingredients })
-        return true
+    
+    // Get recipe by ID
+    // @Query(() => Recipe)
+    // async getOneRecipe(@Arg("id", type => Int) id: number){                    
+    //     return await Recipe.findOne(id);
+    // }
+    // Get recipe by name
+    @Query(() => Recipe)
+    async getOneRecipe(@Arg("name", type => String) name: string){                    
+        return await Recipe.findOne({ where: { name }});
     }
+
+    @Mutation(() => Recipe)
+    async createRecipe(
+        @Arg('variables', () => RecipeInput) variables: RecipeInput,                
+    ) {
+        const recipe = Recipe.create(variables)
+        return await recipe.save()
+    }
+
     
 }

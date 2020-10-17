@@ -1,5 +1,6 @@
 import { Resolver, Query, Mutation, Arg } from 'type-graphql'
-import { User } from '../entity/User';
+import { User } from '../entity/User'
+import { UserInput } from './inputs/UserInput'
 
 @Resolver()
 export class UserResolver {
@@ -9,13 +10,13 @@ export class UserResolver {
         return User.find()
     }
 
-    @Mutation(() => Boolean)
+    @Mutation(() => User)
     async signUp(
-        @Arg("name") name: string,
-        @Arg("email") email: string,
-        @Arg("password") password: string,
-    ) {                        
-        await User.insert({ name, email, password })        
-        return true
+        @Arg("variables", () => UserInput) variables: UserInput
+    ) {                  
+        const user = User.create(variables)        
+        // Encrypt password
+        // user.hashPassword()
+        return await user.save()                        
     }
 }

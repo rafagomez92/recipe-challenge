@@ -1,12 +1,5 @@
 import { ObjectType, Field, ID } from "type-graphql";
-import { Entity, 
-    Column, 
-    PrimaryGeneratedColumn, 
-    Generated,        
-    BaseEntity,
-    Unique    
-    // ManyToOne
-} from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, Unique } from 'typeorm'
 // import { Category } from './Category'
 // import { User } from './User'
 
@@ -14,10 +7,10 @@ import { Entity,
 @Unique(['name'])
 @ObjectType()
 export class Recipe extends BaseEntity{
-    // poner el decorador Generated("uuid");
+
     @Field(() => ID)
     @PrimaryGeneratedColumn()    
-    id!: string
+    id!: number
 
     @Field(() => String)
     @Column()
