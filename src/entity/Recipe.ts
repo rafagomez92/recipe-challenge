@@ -1,27 +1,35 @@
+import { ObjectType, Field, ID } from "type-graphql";
 import { Entity, 
     Column, 
     PrimaryGeneratedColumn, 
-    Generated,            
+    Generated,        
+    BaseEntity,
+    Unique    
     // ManyToOne
 } from 'typeorm'
 // import { Category } from './Category'
 // import { User } from './User'
 
 @Entity()
-export class Recipe {
+@Unique(['name'])
+@ObjectType()
+export class Recipe extends BaseEntity{
     // poner el decorador Generated("uuid");
-    @PrimaryGeneratedColumn()
-    @Generated('uuid')
+    @Field(() => ID)
+    @PrimaryGeneratedColumn()    
     id!: string
 
+    @Field(() => String)
     @Column()
     name!: string
     
+    @Field(() => String)
     @Column()
     description!: string
 
-    @Column("simple-array")
-    ingredients!: string[]
+    @Field(() => String)
+    @Column()
+    ingredients!: string
 
     // A Recipe can have only one user and category
     // @ManyToOne(type => Category, category => category.recipes)    

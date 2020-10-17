@@ -4,7 +4,9 @@ import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 
 import { UserResolver } from './resolvers/UserResolver'
-// import { RecipeResolver } from './resolvers/RecipeResolver'
+import { RecipeResolver } from './resolvers/RecipeResolver';
+import { CategoryResolver } from './resolvers/CategoryResolver';
+
 
 export async function startServer() {
 
@@ -12,7 +14,7 @@ export async function startServer() {
     
     const server = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver]
+            resolvers: [UserResolver, RecipeResolver, CategoryResolver]
         }),
         context: ({ req, res }) => ({ req, res })
     })

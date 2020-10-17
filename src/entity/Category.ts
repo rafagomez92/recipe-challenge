@@ -1,18 +1,22 @@
 import { Entity, 
     Column, 
     PrimaryGeneratedColumn, 
-    Generated, 
+    BaseEntity, 
+    Unique    
     // OneToMany 
 } from 'typeorm'
 // import { Recipe } from './Recipe';
-
+import { ObjectType, ID, Field } from 'type-graphql';
 @Entity()
-export class Category {
+@Unique(['name'])
+@ObjectType()
+export class Category extends BaseEntity {
 
-    @PrimaryGeneratedColumn()
-    @Generated('uuid')
+    @Field(() => ID)
+    @PrimaryGeneratedColumn()    
     id!: string
 
+    @Field(() => String)
     @Column()
     name!: string
 
