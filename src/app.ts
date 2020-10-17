@@ -1,9 +1,10 @@
 import express from 'express'
 // Apollo server for create the endpoint of graphql
 import { ApolloServer } from 'apollo-server-express'
-import { RecipeResolver } from './resolvers/RecipeResolver'
 import { buildSchema } from 'type-graphql'
 
+import { UserResolver } from './resolvers/UserResolver'
+// import { RecipeResolver } from './resolvers/RecipeResolver'
 
 export async function startServer() {
 
@@ -11,7 +12,7 @@ export async function startServer() {
     
     const server = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [RecipeResolver]
+            resolvers: [UserResolver]
         }),
         context: ({ req, res }) => ({ req, res })
     })
