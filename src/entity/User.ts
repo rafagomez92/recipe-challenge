@@ -1,5 +1,5 @@
 // bcryptjs is for encrypt the password
-// import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs';
 import { Entity, Unique, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { ObjectType, Field, ID, Int } from "type-graphql";
 import { Recipe } from './Recipe'
@@ -37,8 +37,8 @@ export class User extends BaseEntity {
     // }
 
     // For authentication 
-    // checkPassword(password: string ): boolean {
-    //     return bcrypt.compareSync(password, this.password);
-    // }
+    checkPassword(password: string ): boolean {
+        return bcrypt.compareSync(password, this.password);
+    }
 
 }

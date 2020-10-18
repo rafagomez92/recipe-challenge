@@ -1,5 +1,7 @@
 import { Query, Resolver, Mutation, Arg, Int, InputType, Field } from 'type-graphql';
+import { Category } from '../entity/Category';
 import { Recipe } from '../entity/Recipe';
+import { User } from '../entity/User';
 import { RecipeInput } from './inputs/RecipeInput';
 import { UpdateRecipeInput } from './inputs/UpdateRecipeInput'
 
@@ -27,8 +29,14 @@ export class RecipeResolver {
     @Mutation(() => Recipe)
     async createRecipe(
         @Arg('variables', () => RecipeInput) variables: RecipeInput,                
+        @Arg('userId', () => Int) userId: number,
+        @Arg('categoryId', () => Int) categoryId: number
     ) {
         const recipe = Recipe.create(variables)
+        const addUser = await User.findOneOrFail(userId)        
+        const addCategory = await Category.findOneOrFail(categoryId)
+        recipe.user = addUser
+        recipe.category = addCategory
         return await recipe.save()
     }
 
