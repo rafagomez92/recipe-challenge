@@ -14,7 +14,8 @@ export async function startServer() {
     
     const server = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, RecipeResolver, CategoryResolver]
+            resolvers: [UserResolver, RecipeResolver, CategoryResolver],
+            validate: false
         }),
         context: ({ req, res }) => ({ req, res })
     })

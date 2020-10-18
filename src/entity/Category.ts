@@ -1,6 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, Unique } from 'typeorm'
+import { Entity, Column, PrimaryGeneratedColumn, BaseEntity, Unique, OneToMany } from 'typeorm'
 import { ObjectType, ID, Field } from 'type-graphql';
-// import { Recipe } from './Recipe';
+import { Recipe } from './Recipe';
 
 @Entity()
 @Unique(['name'])
@@ -15,7 +15,7 @@ export class Category extends BaseEntity {
     @Column()
     name!: string
 
-    // @OneToMany(type => Recipe, recipe => recipe.category)
-    // recipes!: Recipe[]
+    @OneToMany(type => Recipe, category => Category, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
+     recipes!: Recipe[]
     
 }

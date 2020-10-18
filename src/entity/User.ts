@@ -1,11 +1,8 @@
 // bcryptjs is for encrypt the password
 // import * as bcrypt from 'bcryptjs';
-import { Entity, Unique, BaseEntity, PrimaryGeneratedColumn, Column } from 'typeorm'
+import { Entity, Unique, BaseEntity, PrimaryGeneratedColumn, Column, OneToMany } from 'typeorm'
 import { ObjectType, Field, ID, Int } from "type-graphql";
-
-
-
-// import { Recipe } from './Recipe'
+import { Recipe } from './Recipe'
 
 @Entity()
 @Unique(['email'])
@@ -30,8 +27,8 @@ export class User extends BaseEntity {
     password!: string
     
     
-    // @OneToMany(type => Recipe, recipe => recipe.user)
-    // recipes!: Recipe[]
+    @OneToMany(type => Recipe, recipe => recipe.user)
+    recipes!: Recipe[]
     
     // encrypt password
     // hashPassword(): void {

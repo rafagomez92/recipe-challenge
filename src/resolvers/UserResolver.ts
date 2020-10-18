@@ -14,7 +14,8 @@ export class UserResolver {
     async signUp(
         @Arg("variables", () => UserInput) variables: UserInput
     ) {                  
-        const user = User.create(variables)        
+        const user = User.create(variables)   
+        user.recipes = []    
         // Encrypt password
         // user.hashPassword()
         return await user.save()                        
