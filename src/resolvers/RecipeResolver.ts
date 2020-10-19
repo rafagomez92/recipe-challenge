@@ -23,7 +23,7 @@ export class RecipeResolver {
     async getOneRecipe(
         @Arg("name", () => String) name: string
     ) {                    
-        return await Recipe.findOne({ where: { name }});
+        return await Recipe.find({ where: { name }});
     }    
 
     @Mutation(() => Recipe)
@@ -35,7 +35,7 @@ export class RecipeResolver {
         const recipe = Recipe.create(variables)
         const addUser = await User.findOneOrFail(userId)        
         const addCategory = await Category.findOneOrFail(categoryId)
-        recipe.user = addUser
+        recipe.user = Promise.resolve(addUser)
         recipe.category = addCategory
         return await recipe.save()
     }

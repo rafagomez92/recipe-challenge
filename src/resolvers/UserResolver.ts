@@ -1,7 +1,10 @@
-import { Resolver, Query, Mutation, Arg } from 'type-graphql'
+import { Resolver, Query, Mutation, Arg, Int } from 'type-graphql'
 import { User } from '../entity/User'
 import { UserInput } from './inputs/UserInput'
-import * as bcrypt from 'bcryptjs';
+import * as bcrypt from 'bcryptjs'
+import jwt from 'jsonwebtoken'
+import { Recipe } from '../entity/Recipe'
+
 
 @Resolver()
 export class UserResolver {
@@ -10,6 +13,20 @@ export class UserResolver {
     users() {
         return User.find()
     }
+
+    @Query(() => [Recipe])
+    async getMyRecipes(
+        @Arg("id", () => Int) id: number
+    ) {        
+        
+        const user = await User.findOneOrFail({ id })
+        const recipes = await user.recipes        
+        return recipes;
+
+    }
+
+    
+
 
     @Mutation(() => User)
     async signUp(
@@ -21,7 +38,7 @@ export class UserResolver {
         return await user.save()                        
     }
 
-    @Mutation(() => Boolean)
+    @Mutation(() => String)
     async login(
         @Arg("email", () => String) email: string,
         @Arg("password", () => String) password: string
@@ -30,17 +47,18 @@ export class UserResolver {
         user = await User.findOneOrFail({ email: email }) 
         console.log(user)
         if(!user) {
-            console.log("User not found")
-            return false
+            console.log("User not found")            
         }
                        
         const isPasswordValid = bcrypt.compare(user.password, password)
 
         if(!isPasswordValid) {
-            console.log("Incorrect password")
-            return false
+            console.log("Incorrect password")            
         }
 
-        return true;
+        const secret = process.env.SECRET_KEY || 'mysecretkey'
+        const token = jwt.sign({ emai: user.email }, secret, {expiresIn: '1d'})
+        
+        return token;
     }
 }

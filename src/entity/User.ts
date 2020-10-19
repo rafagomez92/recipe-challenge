@@ -28,7 +28,7 @@ export class User extends BaseEntity {
     
     
     @OneToMany(type => Recipe, recipe => recipe.user)
-    recipes!: Recipe[]
+    recipes!: Promise<Recipe[]>
     
     // encrypt password
     // hashPassword(): void {

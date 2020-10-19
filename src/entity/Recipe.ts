@@ -32,5 +32,5 @@ export class Recipe extends BaseEntity{
     
     @ManyToOne(type => User, user => user.recipes)
     @JoinColumn({ name: "userId"})
-    user!: User
+    user!: Promise<User>
 }
