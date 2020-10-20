@@ -8,6 +8,7 @@ import { RecipeResolver } from './resolvers/RecipeResolver';
 import { CategoryResolver } from './resolvers/CategoryResolver';
 
 
+
 export async function startServer() {
 
     const app = express();
@@ -19,6 +20,8 @@ export async function startServer() {
         }),
         context: ({ req, res }) => ({ req, res })
     })
+
+    
     
     server.applyMiddleware({ app, path:'/graphql' })
 

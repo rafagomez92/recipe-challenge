@@ -1,28 +1,39 @@
-import { Resolver, Query, Mutation, Arg, Int } from 'type-graphql'
+import { Resolver, Query, Mutation, Arg, Int, Ctx } from 'type-graphql'
 import { User } from '../entity/User'
 import { UserInput } from './inputs/UserInput'
 import * as bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import { Recipe } from '../entity/Recipe'
+import { decodedToken } from '../util/check_auth'
+
+
 
 
 @Resolver()
 export class UserResolver {
 
     @Query(() => [User])
-    users() {
+    async users(@Ctx() ctx) {   
+        const auth = decodedToken(ctx)
+        return await User.find()
+    }
+    
+    @Query(() => User)
+    userById(
+        @Arg("id", () => Int) id: number
+    ) {        
         return User.find()
     }
 
     @Query(() => [Recipe])
     async getMyRecipes(
-        @Arg("id", () => Int) id: number
-    ) {        
-        
+        @Arg("id", () => Int) id: number,
+        @Ctx() ctx
+    ) {          
+        const auth = decodedToken(ctx)      
         const user = await User.findOneOrFail({ id })
         const recipes = await user.recipes        
         return recipes;
-
     }
 
     

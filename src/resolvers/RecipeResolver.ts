@@ -1,15 +1,17 @@
-import { Query, Resolver, Mutation, Arg, Int, InputType, Field } from 'type-graphql';
+import { Query, Resolver, Mutation, Arg, Int, InputType, Field, Ctx } from 'type-graphql';
 import { Category } from '../entity/Category';
 import { Recipe } from '../entity/Recipe';
 import { User } from '../entity/User';
 import { RecipeInput } from './inputs/RecipeInput';
 import { UpdateRecipeInput } from './inputs/UpdateRecipeInput'
+import { decodedToken } from '../util/check_auth'
 
 @Resolver()
 export class RecipeResolver {
 
     @Query(() => [Recipe])
-    getRecipes() {
+    getRecipes(@Ctx() ctx) {
+        const auth = decodedToken(ctx)
         return Recipe.find();
     }
     
@@ -21,8 +23,10 @@ export class RecipeResolver {
     // Get recipe by name
     @Query(() => Recipe)
     async getOneRecipe(
-        @Arg("name", () => String) name: string
-    ) {                    
+        @Arg("name", () => String) name: string,
+        @Ctx() ctx
+    ) {  
+        const auth = decodedToken(ctx)                  
         return await Recipe.find({ where: { name }});
     }    
 
@@ -30,8 +34,10 @@ export class RecipeResolver {
     async createRecipe(
         @Arg('variables', () => RecipeInput) variables: RecipeInput,                
         @Arg('userId', () => Int) userId: number,
-        @Arg('categoryId', () => Int) categoryId: number
+        @Arg('categoryId', () => Int) categoryId: number,
+        @Ctx() ctx
     ) {
+        const auth = decodedToken(ctx)
         const recipe = Recipe.create(variables)
         const addUser = await User.findOneOrFail(userId)        
         const addCategory = await Category.findOneOrFail(categoryId)
@@ -44,8 +50,10 @@ export class RecipeResolver {
     @Mutation(() => Boolean)
     async updateRecipe(
         @Arg("id", () => Int) id: number,
-        @Arg("fields", () => UpdateRecipeInput) fields: UpdateRecipeInput        
+        @Arg("fields", () => UpdateRecipeInput) fields: UpdateRecipeInput,
+        @Ctx() ctx
     ) {
+        const auth = decodedToken(ctx)
         // Find the recipe by id
         const recipe = await Recipe.findOne(id);        
         if(!recipe) {
@@ -58,8 +66,10 @@ export class RecipeResolver {
     // Return a boolean for the udpate
     @Mutation(() => Boolean)
     async deleteRecipe(
-        @Arg("id", () => Int) id: number,        
+        @Arg("id", () => Int) id: number,
+        @Ctx() ctx        
         ) {
+            const auth = decodedToken(ctx)
             // Find the recipe by id
             const recipe = await Recipe.findOne(id);        
             if(!recipe) {
