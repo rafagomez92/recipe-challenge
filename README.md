@@ -2,7 +2,7 @@
 It consists of an API in Node + GraphQL of Recipes
 
 ## Start 🚀
-**- npm run dev**
+**- npm run start**
 
 
 You need to configure the information of the database in the next route:
