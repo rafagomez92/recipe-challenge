@@ -15,7 +15,7 @@ export class Category extends BaseEntity {
     @Column()
     name!: string
 
-    @OneToMany(type => Recipe, category => Category, {onDelete: 'CASCADE', onUpdate: 'CASCADE'})
-     recipes!: Recipe[]
+    @OneToMany(type => Recipe, category => Category, { onDelete: "CASCADE" })
+     recipes!: Promise<Recipe[]>
     
 }

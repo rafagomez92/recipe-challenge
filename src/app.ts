@@ -1,5 +1,4 @@
 import express from 'express'
-// Apollo server for create the endpoint of graphql
 import { ApolloServer } from 'apollo-server-express'
 import { buildSchema } from 'type-graphql'
 
@@ -11,8 +10,10 @@ import { CategoryResolver } from './resolvers/CategoryResolver';
 
 export async function startServer() {
 
+    // Initialization of express
     const app = express();
     
+    // Creation of the apollo server
     const server = new ApolloServer({
         schema: await buildSchema({
             resolvers: [UserResolver, RecipeResolver, CategoryResolver],
@@ -20,9 +21,8 @@ export async function startServer() {
         }),
         context: ({ req, res }) => ({ req, res })
     })
-
     
-    
+    // Definition of the path 
     server.applyMiddleware({ app, path:'/graphql' })
 
     return app;

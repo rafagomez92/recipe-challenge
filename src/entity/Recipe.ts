@@ -25,12 +25,12 @@ export class Recipe extends BaseEntity{
     ingredients!: string
 
     // A Recipe can have only one user and category
-    @ManyToOne(type => Category, category => category.recipes)    
+    @ManyToOne(type => Category, category => category.recipes, { nullable: false , onDelete: "CASCADE" })    
     @JoinColumn({ name: "categoryId"})
-    category!: Category
+    category!: Promise<Category>
     
-    
-    @ManyToOne(type => User, user => user.recipes)
+    // The user can have many recipes
+    @ManyToOne(type => User, user => user.recipes, { nullable: false , onDelete: "CASCADE" })
     @JoinColumn({ name: "userId"})
     user!: Promise<User>
 }

@@ -9,6 +9,7 @@ import { decodedToken } from '../util/check_auth'
 @Resolver()
 export class RecipeResolver {
 
+    // Get all recipes 
     @Query(() => [Recipe])
     getRecipes(@Ctx() ctx) {
         const auth = decodedToken(ctx)
@@ -20,6 +21,7 @@ export class RecipeResolver {
     // async getOneRecipe(@Arg("id", type => Int) id: number){                    
     //     return await Recipe.findOne(id);
     // }
+    
     // Get recipe by name
     @Query(() => Recipe)
     async getOneRecipe(
@@ -41,12 +43,13 @@ export class RecipeResolver {
         const recipe = Recipe.create(variables)
         const addUser = await User.findOneOrFail(userId)        
         const addCategory = await Category.findOneOrFail(categoryId)
+        // Using lazy relations for save userId and categoryId like foreing key
         recipe.user = Promise.resolve(addUser)
-        recipe.category = addCategory
+        recipe.category = Promise.resolve(addCategory)
         return await recipe.save()
     }
 
-    // Return a boolean for the udpate
+    // Mutation for update recipe, return a boolean for the udpate
     @Mutation(() => Boolean)
     async updateRecipe(
         @Arg("id", () => Int) id: number,
@@ -63,7 +66,7 @@ export class RecipeResolver {
         return true
     }
     
-    // Return a boolean for the udpate
+    // Mutation for delte recipe, return a boolean
     @Mutation(() => Boolean)
     async deleteRecipe(
         @Arg("id", () => Int) id: number,

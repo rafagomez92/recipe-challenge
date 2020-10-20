@@ -3,10 +3,12 @@ import { Category } from '../entity/Category'
 import { CategoryInput } from './inputs/CategoryInput';
 import { UpdateCategoryInput } from './inputs/UpdateCategory';
 import { decodedToken } from '../util/check_auth'
+import { Recipe } from '../entity/Recipe';
 
 @Resolver()
 export class CategoryResolver {
     
+    // Get all categories 
     @Query(() => [Category])
     getCategories(@Ctx() ctx) {
         const auth = decodedToken(ctx)
@@ -15,7 +17,7 @@ export class CategoryResolver {
 
     // Get category by Id
     // @Query(() => Category)
-    // async getOneCategory(@Arg("id", type => Int) id: number){                
+    // async getOneCategoryById(@Arg("id", type => Int) id: number){                
         //     return await Category.findOne(id)                                
         // }
         
@@ -29,6 +31,7 @@ export class CategoryResolver {
         return await Category.findOne({where: {name}})                                
     }
 
+    // Mutation of Create Category
     @Mutation(() => Category)
     async createCategory(
         @Arg('variables', () => CategoryInput) variables: CategoryInput,
@@ -39,6 +42,7 @@ export class CategoryResolver {
         return await category.save()
     }
 
+    // Mutation for update categoryy
     @Mutation(() => Boolean)
     async updateCategory(
         @Arg("id", () => Int) id: number,
@@ -55,6 +59,7 @@ export class CategoryResolver {
         return true
     }
 
+    // Mutation for delete category
     @Mutation(() => Boolean)
     async deleteCategory(
         @Arg("id", () => Int) id: number,
